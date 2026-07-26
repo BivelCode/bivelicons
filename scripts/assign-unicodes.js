@@ -26,7 +26,7 @@ const {
 /**
  * Validate that an icon name follows lowercase-kebab-case.
  */
-const VALID_NAME = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
+const VALID_NAME = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 function validateIconName(fileName, styleId) {
   const base = path.basename(fileName, '.svg');
   if (!VALID_NAME.test(base)) {

@@ -24,14 +24,14 @@ function srcDir(styleId) {
  * @param {string} styleId
  */
 function optimizedDir(styleId) {
-  return path.join(ROOT, 'dist', 'optimized', styleId);
+  return path.join(ROOT, 'packages', 'optimized', styleId);
 }
 
 // Output paths for generated files
-const fontsDir = path.join(ROOT, 'dist', 'bivelcode-icons', 'fonts');
-const cssDir = path.join(ROOT, 'dist', 'bivelcode-icons', 'css');
-const distPackageDir = path.join(ROOT, 'dist', 'bivelcode-icons');
-const distMetadataDir = path.join(ROOT, 'dist', 'bivelcode-icons', 'metadata');
+const fontsDir = path.join(ROOT, 'packages', 'webfonts', 'fonts');
+const cssDir = path.join(ROOT, 'packages', 'webfonts', 'css');
+const distPackageDir = path.join(ROOT, 'packages', 'webfonts');
+const distMetadataDir = path.join(ROOT, 'packages', 'webfonts', 'metadata');
 
 // Metadata directory (versioned, one JSON file per style)
 const metadataDir = path.join(ROOT, 'metadata');

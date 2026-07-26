@@ -1,0 +1,36 @@
+{
+    "ui": "tui",
+    "tasks": {
+        "assign-unicodes": {
+            "outputs": [
+                "metadata/**"
+            ]
+        },
+        "lint-svg": {
+            "dependsOn": [
+                "assign-unicodes"
+            ]
+        },
+        "optimize-svg": {
+            "dependsOn": [
+                "lint-svg"
+            ],
+            "outputs": [
+                "packages/webfonts/optimized/**"
+            ]
+        },
+        "build-fonts": {
+            "dependsOn": [
+                "optimize-svg"
+            ],
+            "outputs": [
+                "packages/webfonts/**"
+            ]
+        },
+        "build-all": {
+            "dependsOn": [
+                "build-fonts"
+            ]
+        }
+    }
+}

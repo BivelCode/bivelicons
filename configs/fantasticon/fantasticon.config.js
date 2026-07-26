@@ -12,6 +12,7 @@ const { normalizePath } = require('../../scripts/utils/os-paths');
  * - normalize: scale all glyphs to the same height.
  * - tag:        HTML element expected to carry the icon classes.
  */
+
 const BASE_CONFIG = {
   fontTypes: ['woff2', 'woff'],
   assetTypes: ['css'],
@@ -36,6 +37,7 @@ const BASE_CONFIG = {
  * @param {object}  codepoints - Map of icon name → unicode codepoint (decimal)
  * @returns {object} Fantasticon configuration object
  */
+
 function getFantasticonConfig(style, codepoints) {
   const inputDir = normalizePath(paths.optimizedDir(style.id));
 
@@ -46,10 +48,7 @@ function getFantasticonConfig(style, codepoints) {
     name: style.fontName,
     prefix: style.prefix,
     codepoints,
-    pathOptions: {
-      fonts: 'fonts',
-      css: 'css',
-    },
+    // pathOptions supprimé → tout sera généré directement dans distPackageDir
   };
 }
 

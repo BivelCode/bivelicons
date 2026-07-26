@@ -1,9 +1,10 @@
 {
+  "$schema": "https://json.schemastore.org/package",
   "name": "bivel-icons",
   "version": "0.0.0",
   "private": true,
   "description": "Bivelcode Icons monorepo tooling and generators",
-  "packageManager": "pnpm@11.13.0",
+  "packageManager": "pnpm@11.17.0",
   "homepage": "https://github.com/BivelCode/icons#readme",
   "bugs": {
     "url": "https://github.com/BivelCode/icons/issues"
@@ -14,7 +15,14 @@
   },
   "author": "Bivelcode",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "assign-unicodes": "node scripts/assign-unicodes.js",
+    "lint-svg": "node scripts/lint-svg.js",
+    "optimize-svg": "node scripts/optimize-svg.js",
+    "build-fonts": "node --max-old-space-size=8192 scripts/build-fonts.js",
+    "build": "turbo run build-all",
+    "ci": "turbo run build-all"
+  },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",
     "fantasticon": "^4.1.0",

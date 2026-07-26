@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package",
-  "name": "bivel-icons",
+  "name": "bivel icons",
   "version": "0.0.0",
   "private": true,
   "description": "Bivelcode Icons monorepo tooling and generators",

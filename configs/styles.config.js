@@ -10,14 +10,11 @@ const path = require('path');
 const { srcDir, fontsDir, cssDir } = require('./utils/paths');
 
 /**
- * Unicode Private Use Area (Plane 15) allocation:
- *   Block 1: U+F0000 - U+F2491 (9362 codepoints) → Solid Rounded
- *   Block 2: U+F2492 - U+F4923 (9362 codepoints) → Brands
- *   Blocks 3-7: Reserved for future styles
+ * Unicode Private Use Area  allocation:
  */
 const UNICODE_START = {
-  'solid-rounded': 0xf0000,
-  brands: 0xf2492,
+  'solid-rounded': 0xe000, // Démarre à U+E000
+  brands: 0xf400, // Démarre à U+E000
 };
 
 /**

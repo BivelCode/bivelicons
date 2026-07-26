@@ -20,8 +20,8 @@
    with or contains the style prefix (e.g. "bi-sr-").
  */
 
-{{ tag }}.bc[class^="{{ prefix }}-"]::before,
-{{ tag }}.bc[class*=" {{ prefix }}-"]::before {
+.bc[class^="{{ prefix }}-"]::before,
+.bc[class*=" {{ prefix }}-"]::before {
   font-family: "{{ name }}" !important;
   font-style: normal;
   font-weight: normal;

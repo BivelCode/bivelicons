@@ -20,7 +20,6 @@ const BASE_CONFIG = {
   selector: '.bc',
   fontHeight: 1000,
   normalize: true,
-  tag: 'i',
   templates: {
     css: path.join(__dirname, 'template.css.hbs'),
   },

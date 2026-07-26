@@ -16,7 +16,7 @@
                 "lint-svg"
             ],
             "outputs": [
-                "packages/webfonts/optimized/**"
+                "packages/optimized/**"
             ]
         },
         "build-fonts": {

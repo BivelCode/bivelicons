@@ -1,7 +1,9 @@
 /**
- * SVG Optimization Script
+ * SVG Optimization Script (incremental)
  *
- * Optimizes all SVG source files for every registered style using SVGO.
+ * Optimizes only new or modified SVG source files for every registered
+ * style using SVGO. Skips files whose optimized version is already up
+ * to date, drastically reducing build time after the first run.
  * Extends the base SVGO configuration with shape-to-path conversion and
  * group collapsing, then normalizes each SVG to a canonical structure
  * before writing it to packages/webfonts/optimized/<style>.
@@ -14,9 +16,7 @@ const styles = require('../configs/styles.config');
 const svgoConfig = require('../configs/svgo/svgo.config');
 const { srcDir, optimizedDir } = require('../configs/utils/paths');
 
-// ------------------------------------------------------------------
 // Extended SVGO configuration – adds shape conversion & group cleanup
-// ------------------------------------------------------------------
 const optimizeConfig = {
   ...svgoConfig,
   plugins: [
@@ -26,66 +26,70 @@ const optimizeConfig = {
   ],
 };
 
-// ------------------------------------------------------------------
 // Canonical SVG structure
-// ------------------------------------------------------------------
 const XML_DECL = '<?xml version="1.0" encoding="UTF-8"?>';
 
 function normalizeSvg(svgString) {
   const body = svgString
     .replace(/^<\?xml[^?]*\?>\s*/i, '')
     .replace(/^(<!--[\s\S]*?-->\s*)+/i, '');
-
   const vbMatch = body.match(/\bviewBox="([^"]*)"/);
   const viewBox = vbMatch ? vbMatch[1] : '0 0 24 24';
-
   const normalized = body.replace(
     /<svg[^>]*>/,
     `<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="${viewBox}">`
   );
-
   return `${XML_DECL}${normalized}`;
 }
 
-// ------------------------------------------------------------------
-// Main optimisation routine
-// ------------------------------------------------------------------
 async function run() {
-  console.log('⚙️  Optimizing SVGs with SVGO…\n');
+  console.log('⚙️  Optimizing SVGs (incremental)…\n');
+
+  let totalSkipped = 0;
+  let totalOptimized = 0;
 
   for (const style of styles) {
     const sourceDir = srcDir(style.id);
     const destDir = optimizedDir(style.id);
 
-    console.log(`  Processing style: ${style.id}`);
-    console.log(`    Source: ${sourceDir}`);
-    console.log(`    Dest:   ${destDir}`);
-
     if (!fs.existsSync(sourceDir)) {
-      console.warn(`  ⚠ Source directory not found, skipping.`);
+      console.warn(`  ⚠ Source directory not found: ${sourceDir}`);
       continue;
     }
 
-    // Create destination (recursive)
     fs.mkdirSync(destDir, { recursive: true });
 
     const files = fs.readdirSync(sourceDir).filter((f) => f.endsWith('.svg'));
-    console.log(`    Found ${files.length} SVG files`);
+    console.log(`  ${style.id}: ${files.length} SVG files total`);
 
-    let optimizedCount = 0;
+    let styleOptimized = 0;
+    let styleSkipped = 0;
+
     for (const file of files) {
-      const filePath = path.join(sourceDir, file);
-      const raw = fs.readFileSync(filePath, 'utf8');
+      const srcPath = path.join(sourceDir, file);
+      const destPath = path.join(destDir, file);
 
+      const srcStat = fs.statSync(srcPath);
+      // Check if destination exists and is newer or same age
+      if (fs.existsSync(destPath)) {
+        const destStat = fs.statSync(destPath);
+        if (destStat.mtimeMs >= srcStat.mtimeMs) {
+          // Already up to date → skip
+          styleSkipped++;
+          continue;
+        }
+      }
+
+      // Needs optimization
+      const raw = fs.readFileSync(srcPath, 'utf8');
       try {
         const result = await svgo.optimize(raw, {
           ...optimizeConfig,
-          path: filePath,
+          path: srcPath,
         });
         const normalized = normalizeSvg(result.data);
-        const outPath = path.join(destDir, file);
-        fs.writeFileSync(outPath, normalized, 'utf8');
-        optimizedCount++;
+        fs.writeFileSync(destPath, normalized, 'utf8');
+        styleOptimized++;
         console.log(`    ✔ ${file} optimized`);
       } catch (err) {
         console.error(
@@ -96,11 +100,15 @@ async function run() {
     }
 
     console.log(
-      `  ${style.id}: ${optimizedCount} icons written to ${destDir}\n`
+      `    → ${styleOptimized} optimized, ${styleSkipped} skipped (up to date)\n`
     );
+    totalOptimized += styleOptimized;
+    totalSkipped += styleSkipped;
   }
 
-  console.log('✅ SVG optimization complete.');
+  console.log(
+    `✅ SVG optimization complete – ${totalOptimized} optimized, ${totalSkipped} skipped.`
+  );
 }
 
 run().catch((err) => {

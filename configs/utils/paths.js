@@ -34,7 +34,7 @@ const distPackageDir = path.join(ROOT, 'packages', 'webfonts');
 const distMetadataDir = path.join(ROOT, 'packages', 'webfonts', 'metadata');
 
 // Metadata directory (versioned, one JSON file per style)
-const metadataDir = path.join(ROOT, 'metadata');
+const codepointsDir = path.join(ROOT, 'configs', 'codepoints');
 
 /**
  * Path to the metadata file for a given style.
@@ -42,7 +42,7 @@ const metadataDir = path.join(ROOT, 'metadata');
  * @returns {string} absolute path to metadata/<styleId>.json
  */
 function styleMetadataPath(styleId) {
-  return path.join(metadataDir, `${styleId}.json`);
+  return path.join(codepointsDir, `${styleId}.json`);
 }
 
 // Configuration paths
@@ -56,7 +56,7 @@ module.exports = {
   cssDir,
   distPackageDir,
   distMetadataDir,
-  metadataDir,
+  codepointsDir,
   styleMetadataPath,
   stylesConfigPath,
 };

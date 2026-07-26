@@ -3,7 +3,7 @@
     "tasks": {
         "assign-unicodes": {
             "outputs": [
-                "metadata/**"
+                "configs/codepoints/**"
             ]
         },
         "lint-svg": {

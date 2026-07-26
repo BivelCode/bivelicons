@@ -13,11 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const styles = require('../configs/styles.config');
-const {
-  srcDir,
-  styleMetadataPath,
-  metadataDir,
-} = require('../configs/utils/paths');
+const { srcDir, styleMetadataPath } = require('../configs/utils/paths');
 
 // ---------------------------------------------------------------------------
 // 1. Helpers

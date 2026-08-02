@@ -1,10 +1,9 @@
 {
   "$schema": "https://json.schemastore.org/package",
-  "name": "bivel icons",
+  "name": "bivelicons",
   "version": "0.0.0",
   "private": true,
-  "description": "Bivelcode Icons monorepo tooling and generators",
-  "packageManager": "pnpm@11.17.0",
+  "description": "BivelIcons monorepo tooling and generators",
   "homepage": "https://github.com/BivelCode/icons#readme",
   "bugs": {
     "url": "https://github.com/BivelCode/icons/issues"
@@ -22,6 +21,13 @@
     "build-fonts": "node --max-old-space-size=8192 scripts/build-fonts.js",
     "build": "turbo run build-all",
     "ci": "turbo run build-all"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": ">=11.0.0",
+      "onFail": "download"
+    }
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",

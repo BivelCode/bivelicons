@@ -31,7 +31,7 @@ function optimizedDir(styleId) {
 const fontsDir = path.join(ROOT, 'packages', 'webfonts', 'fonts');
 const cssDir = path.join(ROOT, 'packages', 'webfonts', 'css');
 const distPackageDir = path.join(ROOT, 'packages', 'webfonts');
-const distMetadataDir = path.join(ROOT, 'packages', 'webfonts', 'metadata');
+const distMetadataDir = path.join(ROOT, 'packages', 'webfonts');
 
 // Metadata directory (versioned, one JSON file per style)
 const codepointsDir = path.join(ROOT, 'configs', 'codepoints');

@@ -9,6 +9,7 @@ const {
   distPackageDir,
   cssDir,
   fontsDir,
+  distMetadataDir,
   styleMetadataPath,
 } = require('../configs/utils/paths');
 const { normalizePath, patchFantasticonGlob } = require('./utils/os-paths');
@@ -139,7 +140,67 @@ function concatAllCSS() {
 }
 
 // ------------------------------------------------------------------
-// 6. Main
+// 6. Generate bivelicons.json metadata
+// ------------------------------------------------------------------
+function generateMetaJson() {
+  const rootPkg = JSON.parse(
+    fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8')
+  );
+  const meta = {
+    name: 'Bivel Icons',
+    version: rootPkg.version,
+    count: 0,
+    icons: {},
+  };
+
+  for (const style of styles) {
+    const codepoints = loadCodepoints(style.id);
+    const styleIcons = [];
+
+    for (const [iconName, codePoint] of Object.entries(codepoints)) {
+      // Read the optimized SVG file
+      const svgPath = path.join(optimizedDir(style.id), `${iconName}.svg`);
+      let svgContent = '';
+      if (fs.existsSync(svgPath)) {
+        svgContent = fs.readFileSync(svgPath, 'utf8').replace(/\r?\n|\r/g, ' ');
+      }
+
+      const hex = codePoint.toString(16).toUpperCase().padStart(4, '0');
+      const hexLower = hex.toLowerCase();
+
+      styleIcons.push({
+        name: iconName,
+        class: `bc ${style.prefix}-${iconName}`,
+        codePoint: codePoint,
+        unicode: `U+${hex}`,
+        css: `\\${hexLower}`,
+        js: `\\u${hex}`,
+        html: `&#x${hex};`,
+        svg: svgContent,
+      });
+      meta.count++;
+    }
+
+    const displayName = style.id
+      .split('-')
+      .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+      .join(' ');
+
+    meta.icons[displayName] = styleIcons;
+  }
+
+  // Ensure the metadata output directory exists
+  fs.mkdirSync(distMetadataDir, { recursive: true });
+  fs.writeFileSync(
+    path.join(distMetadataDir, 'bivelicons.json'),
+    JSON.stringify(meta, null, 2) + '\n',
+    'utf8'
+  );
+  console.log('  Metadata JSON generated → bivelicons.json');
+}
+
+// ------------------------------------------------------------------
+// 7. Main
 // ------------------------------------------------------------------
 async function run() {
   console.log('🔨 Building webfonts…\n');
@@ -154,6 +215,7 @@ async function run() {
   }
 
   concatAllCSS();
+  generateMetaJson();
 
   console.log('\n✅ Fonts and CSS generated successfully in', distPackageDir);
 }

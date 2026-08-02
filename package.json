@@ -29,6 +29,6 @@
     "fast-xml-parser": "^5.10.0",
     "handlebars": "^4.7.9",
     "svgo": "^4.0.2",
-    "turbo": "^2.10.5"
+    "turbo": "^2.10.8"
   }
 }

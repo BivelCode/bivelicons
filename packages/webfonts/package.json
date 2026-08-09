@@ -1,6 +1,6 @@
 {
     "name": "@bivelicons/webfonts",
-    "version": "0.1.0",
+    "version": "0.0.0",
     "description": "A modern, open-source icon library delivered as webfonts. Features multiple styles (Solid Rounded, Brands), auto-generated CSS, and a consistent, easy-to-use class-based API. Optimised for performance and developer experience.",
     "homepage": "https://github.com/BivelCode/bivelicons#readme",
     "bugs": {

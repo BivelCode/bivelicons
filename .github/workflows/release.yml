@@ -3,16 +3,17 @@ name: Release
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
-  pull-requests: write
 
 env:
   TURBO_TELEMETRY_DISABLED: 1
 
 jobs:
   release:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -36,13 +37,53 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Create Release PR or Publish to npm
-        uses: changesets/action@v1
-        with:
-          publish: pnpm run publish-package
-          version: pnpm run version
-          title: 'chore: release packages'
-          commit: 'chore: release packages'
+      - name: Ensure NPM_TOKEN exists
+        run: |
+          if [ -z "${NPM_TOKEN}" ]; then echo "NPM_TOKEN is not set"; exit 1; fi
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Configure git for Actions
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Run changeset version (bump package versions and changelogs)
+        run: pnpm run release:version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Commit and push version changes to main (single commit, skip CI)
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No version changes to commit"
+          else
+            git commit -m "chore(release): version packages [skip ci]" || true
+            git push origin HEAD:main
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure npm auth for publish
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish packages to npm
+        run: pnpm run release:publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create and push Git tag for published package
+        run: |
+          V=$(node -p "require('./packages/webfonts/package.json').version")
+          if [ -n "$V" ]; then
+            git tag -a "v$V" -m "Release v$V" || true
+            git push origin "v$V" || true
+          else
+            echo "Could not determine package version"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

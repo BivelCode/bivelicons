@@ -4,13 +4,13 @@
   "version": "0.0.0",
   "private": true,
   "description": "BivelIcons monorepo tooling and generators",
-  "homepage": "https://github.com/BivelCode/icons#readme",
+  "homepage": "https://github.com/BivelCode/bivelicons#readme",
   "bugs": {
-    "url": "https://github.com/BivelCode/icons/issues"
+    "url": "https://github.com/BivelCode/bivelicons/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BivelCode/icons.git"
+    "url": "git+https://github.com/BivelCode/bivelicons.git"
   },
   "author": "Bivelcode",
   "license": "MIT",

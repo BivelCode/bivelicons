@@ -18,9 +18,12 @@
     "assign-unicodes": "node scripts/assign-unicodes.js",
     "lint-svg": "node scripts/lint-svg.js",
     "optimize-svg": "node scripts/optimize-svg.js",
-    "build-fonts": "node --max-old-space-size=8192 scripts/build-fonts.js",
-    "build": "turbo run build-all",
-    "ci": "turbo run build-all"
+    "build-fonts": "node scripts/build-fonts.js",
+    "build": "turbo run build",
+    "ci": "turbo run build",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "publish-package": "pnpm build && cd packages/webfonts && npm publish"
   },
   "devEngines": {
     "packageManager": {

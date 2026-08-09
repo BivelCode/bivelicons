@@ -18,7 +18,8 @@
         "fonts/",
         "README.md",
         "CHANGELOG.md",
-        "bivelicons.json"
+        "bivelicons.json",
+        "package.json"
     ],
     "keywords": [
         "icons",

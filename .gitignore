@@ -1,6 +1,7 @@
 node_modules/
 packages/webfonts/css/
-packages/webfonts/font/
+packages/webfonts/fonts/
+packages/webfonts/bivelicons.json
 .turbo/
 *.log
 index.html

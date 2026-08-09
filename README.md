@@ -160,7 +160,7 @@ Copiez ce template HTML minimal pour commencer immédiatement :
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BivelCode Icons</title>
+    <title>Bivel Icons</title>
 
     <!-- jsDelivr (all styles CSS recommanded) -->
     <link

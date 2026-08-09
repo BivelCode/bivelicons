@@ -1,4 +1,4 @@
-# Bivel Icons Library
+<h1 align="center">Bivel Icons Library</h1>
 
 <div align="center">
 
@@ -65,7 +65,7 @@ bivelicons/
 │   └── webfonts/                   # Distribution package published to npm
 │       ├── css/                    # Generated CSS files (per style + combined)
 │       ├── fonts/                  # Generated webfonts (WOFF2, WOFF)
-│       ├── bivelicons.json         # Icons metadat
+│       ├── bivelicons.json         # Icons metadata
 │       ├── package.json            # npm package manifest
 │       ├── CHANGELOG.md            # Package-specific changelog
 │       └── README.md               # Package-specific readme

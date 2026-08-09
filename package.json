@@ -23,7 +23,7 @@
     "ci": "turbo run build-all",
     "changeset": "changeset",
     "version": "changeset version",
-    "publish-package": "pnpm build && cd packages/webfonts && npm publish"
+    "release": "pnpm run build && changeset publish --access public"
   },
   "devEngines": {
     "packageManager": {

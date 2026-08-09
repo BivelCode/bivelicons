@@ -17,13 +17,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-<<<<<<< HEAD
-        with:
-          fetch-depth: 0
-
-=======
         
->>>>>>> 638ca09b31edc5d5b8ae149457fcd6a78fd25f8d
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
 
